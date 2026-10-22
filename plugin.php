@@ -9,12 +9,9 @@
  * License: GPLv2
  * Text Domain: iceberg
  * Domain Path: /languages/
- * Version: 2.1.0
- * @github-updater
- * GitHub Plugin URI: icebergwebdesign/iceberg-custom-elements
- * GitHub Plugin URI: https://github.com/icebergwebdesign/iceberg-custom-elements
- * Primary Branch: main
+ * Version: 2.3.1
  */
+
 namespace IcebergCustomElements;
 
 use function Breakdance\Util\getDirectoryPathRelativeToPluginFolder;
@@ -44,14 +41,6 @@ add_action('breakdance_loaded', function () {
         false,
     );
 },
-    // register elements before loading them, below is not a typo
+    // register elements before loading them
     9
-);
-
-define( 'ICEBERG_BREAKDANCE_CUSTOM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'ICEBERG_BREAKDANCE_CUSTOM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-
-add_action('breakdance_loaded', function () {
-    include ICEBERG_BREAKDANCE_CUSTOM_PLUGIN_DIR . 'includes/breakdance_enhanced_menu.php';
-}
 );
