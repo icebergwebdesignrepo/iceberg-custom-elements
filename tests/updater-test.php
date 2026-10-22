@@ -138,6 +138,44 @@ namespace {
         });
     }
     if ($mode === 'refresh' || $mode === 'all') {
-        // Task 2 adds refresh-specific tests here.
+        check('hook refreshes expired signed URL at download time, including bulk context', static function () use ($service) {
+            $hook = $GLOBALS['hooks']['upgrader_pre_download'][0] ?? null;
+            truth($hook !== null, 'upgrader_pre_download hook missing');
+            same(4, $hook[2], 'requires four hook arguments');
+            $expired = 'https://plugin.icebergwebdesign.com/?action=download&plugin=iceberg-custom-elements&token=expired';
+            $fresh = 'https://plugin.icebergwebdesign.com/?action=download&plugin=iceberg-custom-elements&token=fresh';
+            $GLOBALS['transients'] = ['old' => offer('3.0.0', $expired)];
+            $GLOBALS['requests'] = []; $GLOBALS['downloads'] = [];
+            respond(offer('3.0.0', $fresh));
+            same('/tmp/new-package.zip', $service->refresh_package_download(false, $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php']));
+            same([$fresh], $GLOBALS['downloads'], 'fresh URL used instead of expired original');
+            same(1, count($GLOBALS['requests']), 'fresh request bypasses cache');
+            $GLOBALS['downloads'] = [];
+            same('/tmp/new-package.zip', $service->refresh_package_download(false, $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php', 'plugins' => ['iceberg-custom-elements/plugin.php']]));
+            same([$fresh], $GLOBALS['downloads'], 'bulk context must refresh without type');
+        });
+        check('unrelated or already-handled downloads pass through', static function () use ($service) {
+            $expired = 'https://plugin.icebergwebdesign.com/?action=download&plugin=iceberg-custom-elements&token=expired';
+            $GLOBALS['requests'] = []; $GLOBALS['downloads'] = [];
+            same(false, $service->refresh_package_download(false, $expired, null, ['plugin' => 'other/plugin.php']));
+            same(false, $service->refresh_package_download(false, 'https://other.test/?action=download&plugin=iceberg-custom-elements&token=x', null, ['plugin' => 'iceberg-custom-elements/plugin.php']));
+            same(false, $service->refresh_package_download(false, $expired, null, null));
+            same('existing', $service->refresh_package_download('existing', $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php']));
+            same([], $GLOBALS['requests']); same([], $GLOBALS['downloads']);
+        });
+        check('refresh HTTP/validation/download failures abort without stale fallback', static function () use ($service) {
+            $expired = 'https://plugin.icebergwebdesign.com/?action=download&plugin=iceberg-custom-elements&token=expired';
+            $GLOBALS['downloads'] = [];
+            respond(offer(), 503);
+            $failure = $service->refresh_package_download(false, $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php']);
+            truth($failure instanceof WP_Error, 'HTTP failure must abort'); same([], $GLOBALS['downloads']);
+            respond(offer('3.0.0', 'https://evil.test/?action=download&plugin=iceberg-custom-elements&token=x'));
+            $failure = $service->refresh_package_download(false, $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php']);
+            truth($failure instanceof WP_Error, 'foreign package must abort'); same([], $GLOBALS['downloads']);
+            respond(offer()); $GLOBALS['download_result'] = new WP_Error('download_failed');
+            $failure = $service->refresh_package_download(false, $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php']);
+            same('download_failed', $failure->get_error_code());
+            $GLOBALS['download_result'] = '/tmp/new-package.zip';
+        });
     }
 }

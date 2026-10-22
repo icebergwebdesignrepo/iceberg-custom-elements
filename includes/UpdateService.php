@@ -17,6 +17,7 @@ class UpdateService {
         add_filter('pre_set_site_transient_update_plugins', [$this, 'check_for_updates']);
         add_filter('plugins_api', [$this, 'plugin_info'], 20, 3);
         add_action('upgrader_process_complete', [$this, 'clear_cache'], 10, 2);
+        add_filter('upgrader_pre_download', [$this, 'refresh_package_download'], 10, 4);
     }
 
     public function check_for_updates($transient) {
@@ -66,6 +67,21 @@ class UpdateService {
             || ($options['plugin'] ?? null) === $this->plugin_basename) {
             delete_transient($this->cache_key);
         }
+    }
+
+    /** Download a newly signed package, never the stale update-transient URL. */
+    public function refresh_package_download($reply, $package, $upgrader, $hook_extra) {
+        if ($reply !== false || !is_array($hook_extra)
+            || ($hook_extra['plugin'] ?? null) !== $this->plugin_basename
+            || !is_string($package) || !$this->is_trusted_package_url($package)) {
+            return $reply;
+        }
+        // Bypass the 12-hour update cache: download tokens expire after 15 minutes.
+        $data = $this->fetch_update_data();
+        if ($data === false || !version_compare($data['new_version'], $this->current_version, '>')) {
+            return new \WP_Error('iceberg_custom_elements_refresh_failed', 'A fresh update package is unavailable. Please retry the update.');
+        }
+        return download_url($data['package']);
     }
 
     private function fetch_update_data(): array|false {
