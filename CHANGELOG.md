@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0] - 2026-10-23
+
+### Added
+- WordPress update discovery from the Iceberg server and a signed package URL.
+- Fresh package signature retrieval at install time to avoid expired cached URLs.
+- Deterministic release ZIP tooling and standalone updater/package tests.
+
+### Changed
+- Declared minimum WordPress 6.0 and PHP 8.0; existing Element Studio save locations remain unchanged.
+
 ## [1.0.0] - 2023-10-12
 
 Added new "Wrapper Div" element. This element is based on regular Div but can be added without Section as parent.
