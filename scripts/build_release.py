@@ -2,6 +2,7 @@
 """Build a deterministic, allowlisted Iceberg Custom Elements release ZIP."""
 import argparse
 import os
+import subprocess
 from pathlib import Path
 import tempfile
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
@@ -24,12 +25,18 @@ def main():
         parser.error('output must be outside the source tree')
     if output.suffix.lower() != '.zip':
         parser.error('output must be a .zip file')
-    paths = [ROOT / name for name in FILES]
     for directory in DIRECTORIES:
         base = ROOT / directory
         if not base.is_dir():
             parser.error(f'missing runtime directory: {directory}')
-        paths.extend(p for p in base.rglob('*') if p.is_file())
+    tracked = subprocess.run(['git', 'ls-files', '-z', '--', *FILES, *DIRECTORIES],
+                             cwd=ROOT, capture_output=True, check=True).stdout
+    paths = [ROOT / os.fsdecode(name) for name in tracked.split(b'\0') if name]
+    for required in FILES:
+        if ROOT / required not in paths:
+            parser.error(f'missing tracked runtime file: {required}')
+    if not all(any((ROOT / directory) in path.parents for path in paths) for directory in DIRECTORIES):
+        parser.error('missing tracked runtime directory')
     for path in paths:
         if not path.is_file() or path.is_symlink() or ROOT not in path.resolve().parents:
             parser.error(f'invalid runtime file: {path}')

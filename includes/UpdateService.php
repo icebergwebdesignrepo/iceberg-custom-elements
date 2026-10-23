@@ -72,9 +72,11 @@ class UpdateService {
     /** Download a newly signed package, never the stale update-transient URL. */
     public function refresh_package_download($reply, $package, $upgrader, $hook_extra) {
         if ($reply !== false || !is_array($hook_extra)
-            || ($hook_extra['plugin'] ?? null) !== $this->plugin_basename
-            || !is_string($package) || !$this->is_trusted_package_url($package)) {
+            || ($hook_extra['plugin'] ?? null) !== $this->plugin_basename) {
             return $reply;
+        }
+        if (!is_string($package) || !$this->is_trusted_package_url($package)) {
+            return new \WP_Error('iceberg_custom_elements_unsafe_package', 'The update package URL is not trusted.');
         }
         // Bypass the 12-hour update cache: download tokens expire after 15 minutes.
         $data = $this->fetch_update_data();

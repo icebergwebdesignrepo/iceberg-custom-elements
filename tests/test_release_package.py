@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import uuid
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +45,21 @@ class ReleasePackageTests(unittest.TestCase):
                 result = self.run_builder(path)
                 self.assertEqual(0, result.returncode, result.stderr)
             self.assertEqual(hashlib.sha256(a.read_bytes()).digest(), hashlib.sha256(b.read_bytes()).digest())
+
+    def test_untracked_runtime_file_never_enters_zip(self):
+        candidate = ROOT / 'includes' / f'.untracked-{uuid.uuid4().hex}.env'
+        try:
+            candidate.write_text('nonsecret-test-fixture', encoding='utf-8')
+            with tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp) / 'package.zip'
+                result = self.run_builder(target)
+                if result.returncode == 0:
+                    with ZipFile(target) as archive:
+                        self.assertNotIn(f'iceberg-custom-elements/includes/{candidate.name}', archive.namelist())
+                else:
+                    self.assertFalse(target.exists())
+        finally:
+            candidate.unlink(missing_ok=True)
 
     def test_output_inside_source_tree_is_rejected_without_modifying_source(self):
         source = ROOT / 'plugin.php'

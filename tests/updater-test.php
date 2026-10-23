@@ -158,7 +158,9 @@ namespace {
             $expired = 'https://plugin.icebergwebdesign.com/?action=download&plugin=iceberg-custom-elements&token=expired';
             $GLOBALS['requests'] = []; $GLOBALS['downloads'] = [];
             same(false, $service->refresh_package_download(false, $expired, null, ['plugin' => 'other/plugin.php']));
-            same(false, $service->refresh_package_download(false, 'https://other.test/?action=download&plugin=iceberg-custom-elements&token=x', null, ['plugin' => 'iceberg-custom-elements/plugin.php']));
+            same(false, $service->refresh_package_download(false, 'https://other.test/?action=download&plugin=iceberg-custom-elements&token=x', null, ['plugin' => 'other/plugin.php']));
+            $unsafe = $service->refresh_package_download(false, 'https://other.test/malicious.zip', null, ['plugin' => 'iceberg-custom-elements/plugin.php']);
+            truth($unsafe instanceof WP_Error, 'target plugin must never fall through to unsafe original download');
             same(false, $service->refresh_package_download(false, $expired, null, null));
             same('existing', $service->refresh_package_download('existing', $expired, null, ['plugin' => 'iceberg-custom-elements/plugin.php']));
             same([], $GLOBALS['requests']); same([], $GLOBALS['downloads']);

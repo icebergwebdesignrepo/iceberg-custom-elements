@@ -13,9 +13,19 @@ expires after 15 minutes, so the updater obtains a fresh signature immediately
 before downloading. A failed refresh stops the update rather than retrying an
 expired URL. WordPress 6.0 and PHP 8.0 are minimum declared versions.
 
+## First rollout from 2.3.1
+
+Existing 2.3.1 installations do not contain this updater or an `Update URI`
+header. Registering the 3.0.0 ZIP on the server **cannot** make those sites
+discover it automatically. Each existing site needs a separately approved,
+one-time manual install/update of the reviewed 3.0.0 ZIP (with a backup of
+site-local Element Studio edits first). After that bootstrap, WordPress can
+check this server and each site may enable per-plugin Auto-updates. No installed
+WordPress site is changed by this repository or server registration.
+
 ## Release packaging
 
-From the repository root:
+From the repository root (a Git checkout; only tracked runtime files enter the ZIP):
 
 ```sh
 php -l plugin.php
