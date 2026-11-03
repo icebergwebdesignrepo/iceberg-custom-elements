@@ -43,6 +43,15 @@ class ElementDefaultCssScopeTest(unittest.TestCase):
                     f"Nested native sections are matched by: {selector.strip()}",
                 )
 
+    def test_custom_inner_section_defaults_do_not_override_authored_padding(self):
+        defaults = (ROOT / "elements" / "Inner_Section" / "default.css").read_text()
+        authored = (ROOT / "elements" / "Inner_Section" / "css.twig").read_text()
+        # Breakdance's native Section defaults already supply fallback padding.
+        # A more-specific element default would defeat the per-instance
+        # padding-top produced by the saved spacing control.
+        self.assertNotRegex(defaults, r"(?i)\bpadding(?:-(?:top|right|bottom|left))?\s*:")
+        self.assertIn("macros.spacing_complex(design.spacing.padding, 'padding')", authored)
+
 
 if __name__ == "__main__":
     unittest.main()

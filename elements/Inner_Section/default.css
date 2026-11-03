@@ -14,8 +14,6 @@
   align-items: flex-start;
   text-align: left;
   margin: 0 auto;
-  padding: var(--bde-section-vertical-padding)
-    var(--bde-section-horizontal-padding);
 }
 
 .breakdance .bde-section.iceberg-inner-section > .section-shape-divider-wrapper {
