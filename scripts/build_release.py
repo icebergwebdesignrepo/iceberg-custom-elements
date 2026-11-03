@@ -40,8 +40,8 @@ def main():
     for path in paths:
         if not path.is_file() or path.is_symlink() or ROOT not in path.resolve().parents:
             parser.error(f'invalid runtime file: {path}')
-    if b'Version: 3.0.1' not in (ROOT / 'plugin.php').read_bytes():
-        parser.error('plugin.php does not declare Version: 3.0.1')
+    if b'Version: 3.0.2' not in (ROOT / 'plugin.php').read_bytes():
+        parser.error('plugin.php does not declare Version: 3.0.2')
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
     try:

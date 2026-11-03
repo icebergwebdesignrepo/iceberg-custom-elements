@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.2] - Unreleased
+
+### Fixed
+- Allow saved Inner Section padding settings to override the default padding supplied by Breakdance's native Section styles.
+
+### Changed
+- Show Inner Section and Wrapper Div together under the registered IcebergWebDesign category in Add Elements. Their saved element identities, class names, and layout remain unchanged.
+- Regenerate Breakdance CSS cache after upgrading existing sites so previously generated defaults no longer override instance padding.
+
 ## [3.0.1] - 2026-11-03
 
 ### Fixed

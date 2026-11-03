@@ -45,7 +45,7 @@ class WrapperDiv extends \Breakdance\Elements\Element
 
     static function category()
     {
-        return 'advanced';
+        return 'iceberg-web-design';
     }
 
     static function badge()
