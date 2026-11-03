@@ -240,7 +240,7 @@ class WrapperDiv extends \Breakdance\Elements\Element
 
     static function additionalClasses()
     {
-        return false;
+        return [['name' => 'iceberg-wrapper-div', 'template' => 'yes']];
     }
 
     static function projectManagement()

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.1] - 2026-11-03
+
+### Fixed
+- Scope Wrapper Div and Inner Section default CSS to their own elements so saving them cannot override native Breakdance Div/Section styles in other page templates.
+- Keep the existing `bde-div` and `bde-section` classes for site CSS compatibility, while preventing Inner Section defaults from styling nested Sections.
+
 ## [3.0.0] - 2026-10-23
 
 ### Added
