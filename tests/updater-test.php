@@ -4,12 +4,21 @@ namespace Breakdance\Util {
     function getDirectoryPathRelativeToPluginFolder($directory) { return 'iceberg-custom-elements'; }
 }
 namespace Breakdance\ElementStudio {
-    function registerSaveLocation(...$args) { $GLOBALS['save_locations'][] = $args; }
+    function registerSaveLocation(...$args) { $GLOBALS['registration_order'][] = 'save_location'; $GLOBALS['save_locations'][] = $args; }
+    function registerElementForEditing(...$args) { $GLOBALS['editable_elements'][] = $args; }
+}
+namespace Breakdance\Elements {
+    class Element {}
+    function registerCategory($slug, $label) {
+        $GLOBALS['registration_order'][] = 'category';
+        $GLOBALS['element_categories'][] = ['slug' => $slug, 'label' => $label];
+    }
 }
 namespace {
     error_reporting(E_ALL);
     set_error_handler(static function ($severity, $message) { throw new \ErrorException($message, 0, $severity); });
     $GLOBALS['hooks'] = []; $GLOBALS['save_locations'] = []; $GLOBALS['transients'] = [];
+    $GLOBALS['element_categories'] = []; $GLOBALS['registration_order'] = [];
     $GLOBALS['remote'] = null; $GLOBALS['requests'] = [];
     $GLOBALS['downloads'] = []; $GLOBALS['download_result'] = '/tmp/new-package.zip';
     function same($want, $got, $message = '') {
@@ -60,7 +69,7 @@ namespace {
     if ($mode === 'discovery' || $mode === 'all') {
         check('plugin metadata', static function () use ($file) {
             $text = file_get_contents($file);
-            truth((bool) preg_match('/\* Version: 3\.0\.1\b/', $text), '3.0.1 version missing');
+            truth((bool) preg_match('/\* Version: 3\.0\.2\b/', $text), '3.0.2 version missing');
             truth((bool) preg_match('/\* Requires at least: 6\.0\b/', $text), 'WP 6.0 requirement missing');
             truth((bool) preg_match('/\* Requires PHP: 8\.0\b/', $text), 'PHP 8.0 requirement missing');
         });
@@ -72,6 +81,20 @@ namespace {
             truth(!isset($GLOBALS['hooks']['auto_update_plugin']), 'must not force auto-update');
             truth(isset($GLOBALS['hooks']['plugins_api']), 'plugin info hook missing');
             truth(isset($GLOBALS['hooks']['upgrader_process_complete']), 'cache hook missing');
+        });
+        check('custom category preserves saved element identities', static function () {
+            same([['slug' => 'iceberg-web-design', 'label' => 'IcebergWebDesign']], $GLOBALS['element_categories']);
+            same('category', $GLOBALS['registration_order'][0] ?? null, 'register category before save locations');
+            require_once dirname(__DIR__) . '/elements/Inner_Section/element.php';
+            require_once dirname(__DIR__) . '/elements/Wrapper_Div/element.php';
+            foreach ([
+                'IcebergCustomElements\\InnerSection' => 'bde-section',
+                'IcebergCustomElements\\WrapperDiv' => 'bde-div',
+            ] as $savedType => $baseClass) {
+                truth(class_exists($savedType), 'previously saved element type missing: ' . $savedType);
+                same('iceberg-web-design', $savedType::category());
+                same($baseClass, $savedType::className());
+            }
         });
         check('new signed update offer and request contract', static function () use ($service) {
             respond(offer()); $GLOBALS['requests'] = []; $GLOBALS['transients'] = [];

@@ -45,7 +45,7 @@ class InnerSection extends \Breakdance\Elements\Element
 
     static function category()
     {
-        return 'basic';
+        return 'iceberg-web-design';
     }
 
     static function badge()

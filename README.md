@@ -6,21 +6,23 @@ updating the plugin can overwrite site-local Element Studio edits.
 
 ## Updating
 
-Version `3.0.1` checks `https://plugin.icebergwebdesign.com` for updates in the
+The `3.0.2` release candidate checks `https://plugin.icebergwebdesign.com` for updates in the
 WordPress Plugins dashboard. Auto-updates remain a per-site WordPress choice;
 the plugin does not force them. The server supplies a signed package URL that
 expires after 15 minutes, so the updater obtains a fresh signature immediately
 before downloading. A failed refresh stops the update rather than retrying an
 expired URL. WordPress 6.0 and PHP 8.0 are minimum declared versions.
 
-### Breakdance CSS cache after upgrading to 3.0.1
+### Breakdance CSS cache after upgrading from 3.0.0 or 3.0.1
 
 Breakdance keeps generated per-page and per-template stylesheets. On sites that
 saved Wrapper Div or Inner Section while 3.0.0 was installed, old broad CSS
 selectors remain in those files **after the plugin update**. Back up the site,
 then use **Breakdance → Settings → Tools → Regenerate CSS Cache** to rebuild the
 generated stylesheets. Otherwise the original header/layout regression can
-remain visible even though the installed plugin reports 3.0.1.
+remain visible even though the installed plugin reports a newer version. The
+same cache rebuild is needed for 3.0.2 to remove old Inner Section default
+padding that would override the saved per-instance padding.
 
 ## First rollout from 2.3.1
 
@@ -47,7 +49,7 @@ python scripts/build_release.py --output /absolute/private/path/iceberg-custom-e
 Place the tested ZIP at
 `/home/iceberg/private/plugins/iceberg-custom-elements/iceberg-custom-elements.zip`
 and register the slug `iceberg-custom-elements` in the update server's **private**
-configuration. Its metadata must match the ZIP (`current_version: 3.0.1`,
+configuration. Its metadata must match the ZIP (`current_version: 3.0.2`,
 `requires: 6.0`, `requires_php: 8.0`, `requires_license: false`); `tested: 7.1.3`
 is owner-reported, not an end-to-end verification by this project. Back up the
 specific private config and target artifact outside the public web root before
