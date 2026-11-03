@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Scope Wrapper Div and Inner Section default CSS to their own elements so saving them cannot override native Breakdance Div/Section styles in other page templates.
 - Keep the existing `bde-div` and `bde-section` classes for site CSS compatibility, while preventing Inner Section defaults from styling nested Sections.
 
+### Upgrade note
+- Regenerate Breakdance's CSS cache after updating an affected 3.0.0 site; previously generated stylesheets retain the old selectors until rebuilt.
+
 ## [3.0.0] - 2026-10-23
 
 ### Added
