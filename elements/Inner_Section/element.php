@@ -568,7 +568,7 @@ window.BreakdanceSwiper().destroy(
 
     static function additionalClasses()
     {
-        return false;
+        return [['name' => 'iceberg-inner-section', 'template' => 'yes']];
     }
 
     static function projectManagement()

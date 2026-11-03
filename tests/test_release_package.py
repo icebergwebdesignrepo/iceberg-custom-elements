@@ -35,7 +35,9 @@ class ReleasePackageTests(unittest.TestCase):
                 self.assertIn('iceberg-custom-elements/LICENSE', names)
                 self.assertIn('iceberg-custom-elements/README.md', names)
                 self.assertIn('iceberg-custom-elements/CHANGELOG.md', names)
-                self.assertIn(b'Version: 3.0.0', archive.read('iceberg-custom-elements/plugin.php'))
+                entry = archive.read('iceberg-custom-elements/plugin.php')
+                self.assertIn(b'Version: 3.0.1', entry)
+                self.assertIn(b"new UpdateService(__FILE__, '3.0.1'", entry)
                 self.assertFalse(any('/.git/' in p or '/docs/' in p or '/tests/' in p or '/scripts/' in p for p in names))
 
     def test_repeated_builds_are_byte_identical(self):
