@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.2] - Unreleased
+## [3.0.2] - 2026-11-04
 
 ### Fixed
 - Allow saved Inner Section padding settings to override the default padding supplied by Breakdance's native Section styles.
