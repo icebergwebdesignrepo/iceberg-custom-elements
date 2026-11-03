@@ -13,6 +13,15 @@ expires after 15 minutes, so the updater obtains a fresh signature immediately
 before downloading. A failed refresh stops the update rather than retrying an
 expired URL. WordPress 6.0 and PHP 8.0 are minimum declared versions.
 
+### Breakdance CSS cache after upgrading to 3.0.1
+
+Breakdance keeps generated per-page and per-template stylesheets. On sites that
+saved Wrapper Div or Inner Section while 3.0.0 was installed, old broad CSS
+selectors remain in those files **after the plugin update**. Back up the site,
+then use **Breakdance → Settings → Tools → Regenerate CSS Cache** to rebuild the
+generated stylesheets. Otherwise the original header/layout regression can
+remain visible even though the installed plugin reports 3.0.1.
+
 ## First rollout from 2.3.1
 
 Existing 2.3.1 installations do not contain this updater or an `Update URI`
@@ -45,5 +54,7 @@ specific private config and target artifact outside the public web root before
 server changes; verify their hashes and preserve other plugin registrations.
 If deployment validation fails, restore only touched targets from that backup.
 Never commit private config, secrets, signed URLs, or server archives to Git.
-A staging WordPress + Breakdance smoke test is still needed before rolling out
-installed sites.
+The CSS fix and a post-save custom-element smoke test were verified on
+`layout17.icebergweb.dev` staging with Breakdance 3.0.1 on 2026-11-03.
+Production installations and the private update-server package are separate
+rollouts and are not changed by merging this repository.
