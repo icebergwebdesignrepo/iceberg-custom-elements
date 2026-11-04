@@ -32,6 +32,7 @@ class ReleasePackageTests(unittest.TestCase):
                 self.assertIn('iceberg-custom-elements/includes/breakdance_enhanced_menu.php', names)
                 self.assertIn('iceberg-custom-elements/includes/UpdateService.php', names)
                 self.assertIn('iceberg-custom-elements/includes/gravity-form-settings.php', names)
+                self.assertIn('iceberg-custom-elements/js/topbar-hide.js', names)
                 self.assertIn('iceberg-custom-elements/assets/js/iceberg-menu-click-handler.js', names)
                 self.assertIn('iceberg-custom-elements/LICENSE', names)
                 self.assertIn('iceberg-custom-elements/README.md', names)

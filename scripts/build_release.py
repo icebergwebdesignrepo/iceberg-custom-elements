@@ -9,7 +9,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_ROOT = 'iceberg-custom-elements'
-FILES = ('plugin.php', 'LICENSE', 'README.md', 'CHANGELOG.md')
+FILES = ('plugin.php', 'LICENSE', 'README.md', 'CHANGELOG.md', 'js/topbar-hide.js')
 DIRECTORIES = ('elements', 'includes', 'assets')
 TIMESTAMP = (2020, 1, 1, 0, 0, 0)
 

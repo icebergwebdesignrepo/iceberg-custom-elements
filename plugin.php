@@ -24,6 +24,17 @@ new UpdateService(__FILE__, '3.0.3', 'https://plugin.icebergwebdesign.com');
 
 require_once __DIR__ . '/includes/gravity-form-settings.php';
 
+// Keep the legacy #iwd-top-bar behavior on sites that still use it.
+add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_script(
+        'topbar-hide',
+        plugin_dir_url(__FILE__) . 'js/topbar-hide.js',
+        [],
+        '3.0.3',
+        true
+    );
+});
+
 add_action('breakdance_loaded', function () {
     \Breakdance\Elements\registerCategory('iceberg-web-design', 'IcebergWebDesign');
 

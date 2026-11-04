@@ -24,6 +24,16 @@ remain visible even though the installed plugin reports a newer version. The
 same cache rebuild is needed for 3.0.2 to remove old Inner Section default
 padding that would override the saved per-instance padding.
 
+## Top bar compatibility in 3.0.3
+
+The legacy `js/topbar-hide.js` is included for headers containing `#iwd-top-bar`.
+It adds the `hidden` class after scrolling past 100px and removes it only when
+returning to the top. Existing sites still need their own CSS for the `hidden`
+class; the script is a no-op without the ID. Sites using the newer `.top-bar`
+CSS approach do not need to add the legacy ID. Migrate old headers site by site:
+remove the ID (or script) before enabling the height-transition CSS, since
+`display: none` from the legacy `hidden` rule would cut off the animation.
+
 ## First rollout from 2.3.1
 
 Existing 2.3.1 installations do not contain this updater or an `Update URI`

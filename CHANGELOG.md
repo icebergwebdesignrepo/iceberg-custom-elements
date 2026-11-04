@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Restore the Gravity Forms submit button classes (`button-atom`, `button-atom--primary`, `bde-button__button`) present in v2.3.0, while preserving native Gravity Forms classes.
+- Restore the legacy `#iwd-top-bar` scroll script for sites still using that ID; it has no effect when the ID is absent.
 
 ## [3.0.2] - 2026-11-04
 
