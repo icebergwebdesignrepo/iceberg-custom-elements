@@ -1,5 +1,5 @@
 <?php
-/** Check that the legacy top bar script is enqueued only on the frontend. */
+/** Regression: release 3.0.4 must not load the legacy top bar script. */
 namespace Breakdance\Util {
     function getDirectoryPathRelativeToPluginFolder($directory) { return 'iceberg-custom-elements'; }
 }
@@ -28,15 +28,8 @@ namespace {
     foreach ($GLOBALS['test_hooks']['wp_enqueue_scripts'] ?? [] as $callback) {
         $callback();
     }
-    $expected = [[
-        'topbar-hide',
-        'https://example.test/wp-content/plugins/iceberg-custom-elements/js/topbar-hide.js',
-        [],
-        '3.0.3',
-        true,
-    ]];
-    if ($GLOBALS['enqueued_scripts'] !== $expected) {
-        throw new \RuntimeException('Legacy top bar script was not enqueued with the expected URL, version, and footer flag: ' . var_export($GLOBALS['enqueued_scripts'], true));
+    if ($GLOBALS['enqueued_scripts'] !== [] || isset($GLOBALS['test_hooks']['wp_enqueue_scripts'])) {
+        throw new \RuntimeException('Legacy top bar script is still registered or enqueued');
     }
-    echo "PASS legacy top bar script enqueued on frontend\n";
+    echo "PASS legacy top bar script is not registered or enqueued\n";
 }
