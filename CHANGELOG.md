@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.3] - Unreleased
+## [3.0.3] - 2026-11-05
 
 ### Fixed
 - Restore the Gravity Forms submit button classes (`button-atom`, `button-atom--primary`, `bde-button__button`) present in v2.3.0, while preserving native Gravity Forms classes.
