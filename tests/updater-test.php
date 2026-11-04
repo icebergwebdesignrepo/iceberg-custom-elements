@@ -69,7 +69,7 @@ namespace {
     if ($mode === 'discovery' || $mode === 'all') {
         check('plugin metadata', static function () use ($file) {
             $text = file_get_contents($file);
-            truth((bool) preg_match('/\* Version: 3\.0\.2\b/', $text), '3.0.2 version missing');
+            truth((bool) preg_match('/\* Version: 3\.0\.3\b/', $text), '3.0.3 version missing');
             truth((bool) preg_match('/\* Requires at least: 6\.0\b/', $text), 'WP 6.0 requirement missing');
             truth((bool) preg_match('/\* Requires PHP: 8\.0\b/', $text), 'PHP 8.0 requirement missing');
         });

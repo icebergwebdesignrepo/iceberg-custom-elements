@@ -9,7 +9,7 @@
  * License: GPLv2
  * Text Domain: iceberg
  * Domain Path: /languages/
- * Version: 3.0.2
+ * Version: 3.0.3
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Update URI: https://plugin.icebergwebdesign.com/iceberg-custom-elements
@@ -20,7 +20,9 @@ namespace IcebergCustomElements;
 use function Breakdance\Util\getDirectoryPathRelativeToPluginFolder;
 
 require_once __DIR__ . '/includes/UpdateService.php';
-new UpdateService(__FILE__, '3.0.2', 'https://plugin.icebergwebdesign.com');
+new UpdateService(__FILE__, '3.0.3', 'https://plugin.icebergwebdesign.com');
+
+require_once __DIR__ . '/includes/gravity-form-settings.php';
 
 add_action('breakdance_loaded', function () {
     \Breakdance\Elements\registerCategory('iceberg-web-design', 'IcebergWebDesign');
