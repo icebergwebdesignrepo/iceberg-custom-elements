@@ -31,13 +31,16 @@ class ReleasePackageTests(unittest.TestCase):
                 self.assertIn('iceberg-custom-elements/elements/Inner_Section/element.php', names)
                 self.assertIn('iceberg-custom-elements/includes/breakdance_enhanced_menu.php', names)
                 self.assertIn('iceberg-custom-elements/includes/UpdateService.php', names)
+                self.assertIn('iceberg-custom-elements/includes/gravity-form-settings.php', names)
+                self.assertIn('iceberg-custom-elements/js/topbar-hide.js', names)
                 self.assertIn('iceberg-custom-elements/assets/js/iceberg-menu-click-handler.js', names)
                 self.assertIn('iceberg-custom-elements/LICENSE', names)
                 self.assertIn('iceberg-custom-elements/README.md', names)
                 self.assertIn('iceberg-custom-elements/CHANGELOG.md', names)
                 entry = archive.read('iceberg-custom-elements/plugin.php')
-                self.assertIn(b'Version: 3.0.2', entry)
-                self.assertIn(b"new UpdateService(__FILE__, '3.0.2'", entry)
+                self.assertIn(b'Version: 3.0.3', entry)
+                self.assertIn(b"new UpdateService(__FILE__, '3.0.3'", entry)
+                self.assertIn(b"require_once __DIR__ . '/includes/gravity-form-settings.php'", entry)
                 self.assertFalse(any('/.git/' in p or '/docs/' in p or '/tests/' in p or '/scripts/' in p for p in names))
 
     def test_repeated_builds_are_byte_identical(self):

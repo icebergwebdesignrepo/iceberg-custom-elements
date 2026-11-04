@@ -6,7 +6,7 @@ updating the plugin can overwrite site-local Element Studio edits.
 
 ## Updating
 
-The `3.0.2` release candidate checks `https://plugin.icebergwebdesign.com` for updates in the
+The `3.0.3` release checks `https://plugin.icebergwebdesign.com` for updates in the
 WordPress Plugins dashboard. Auto-updates remain a per-site WordPress choice;
 the plugin does not force them. The server supplies a signed package URL that
 expires after 15 minutes, so the updater obtains a fresh signature immediately
@@ -23,6 +23,16 @@ generated stylesheets. Otherwise the original header/layout regression can
 remain visible even though the installed plugin reports a newer version. The
 same cache rebuild is needed for 3.0.2 to remove old Inner Section default
 padding that would override the saved per-instance padding.
+
+## Top bar compatibility in 3.0.3
+
+The legacy `js/topbar-hide.js` is included for headers containing `#iwd-top-bar`.
+It adds the `hidden` class after scrolling past 100px and removes it only when
+returning to the top. Existing sites still need their own CSS for the `hidden`
+class; the script is a no-op without the ID. Sites using the newer `.top-bar`
+CSS approach do not need to add the legacy ID. Migrate old headers site by site:
+remove the ID (or script) before enabling the height-transition CSS, since
+`display: none` from the legacy `hidden` rule would cut off the animation.
 
 ## First rollout from 2.3.1
 
@@ -49,7 +59,7 @@ python scripts/build_release.py --output /absolute/private/path/iceberg-custom-e
 Place the tested ZIP at
 `/home/iceberg/private/plugins/iceberg-custom-elements/iceberg-custom-elements.zip`
 and register the slug `iceberg-custom-elements` in the update server's **private**
-configuration. Its metadata must match the ZIP (`current_version: 3.0.2`,
+configuration. Its metadata must match the ZIP (`current_version: 3.0.3`,
 `requires: 6.0`, `requires_php: 8.0`, `requires_license: false`); `tested: 7.1.3`
 is owner-reported, not an end-to-end verification by this project. Back up the
 specific private config and target artifact outside the public web root before

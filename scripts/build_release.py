@@ -9,7 +9,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_ROOT = 'iceberg-custom-elements'
-FILES = ('plugin.php', 'LICENSE', 'README.md', 'CHANGELOG.md')
+FILES = ('plugin.php', 'LICENSE', 'README.md', 'CHANGELOG.md', 'js/topbar-hide.js')
 DIRECTORIES = ('elements', 'includes', 'assets')
 TIMESTAMP = (2020, 1, 1, 0, 0, 0)
 
@@ -40,8 +40,8 @@ def main():
     for path in paths:
         if not path.is_file() or path.is_symlink() or ROOT not in path.resolve().parents:
             parser.error(f'invalid runtime file: {path}')
-    if b'Version: 3.0.2' not in (ROOT / 'plugin.php').read_bytes():
-        parser.error('plugin.php does not declare Version: 3.0.2')
+    if b'Version: 3.0.3' not in (ROOT / 'plugin.php').read_bytes():
+        parser.error('plugin.php does not declare Version: 3.0.3')
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
     try:
