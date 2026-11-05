@@ -1,11 +1,11 @@
-.breakdance .bde-section.iceberg-inner-section {
+:where(.breakdance .bde-section.iceberg-inner-section) {
   position: relative;
   width: 100%;
   background-position: center center;
   background-size: cover;
 }
 
-.breakdance .bde-section.iceberg-inner-section > .section-container {
+:where(.breakdance .bde-section.iceberg-inner-section > .section-container) {
   max-width: var(--bde-section-width);
   background-size: cover;
   position: relative;
@@ -16,7 +16,7 @@
   margin: 0 auto;
 }
 
-.breakdance .bde-section.iceberg-inner-section > .section-shape-divider-wrapper {
+:where(.breakdance .bde-section.iceberg-inner-section > .section-shape-divider-wrapper) {
   position: absolute;
   overflow: hidden;
   top: 0;
@@ -26,11 +26,8 @@
   pointer-events: none;
 }
 
-.breakdance
-  .bde-section.iceberg-inner-section
-  > .section-shape-divider-wrapper
-  .section-shape-divider
-  svg {
+:where(.breakdance .bde-section.iceberg-inner-section
+  > .section-shape-divider-wrapper .section-shape-divider svg) {
   position: absolute;
   color: #000;
   width: 100%;

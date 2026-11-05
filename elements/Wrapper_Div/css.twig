@@ -32,13 +32,13 @@
 {% endif %}
 
 {% if design.text_colors.link %}
-  %%SELECTOR%% a {
+  %%SELECTOR%% a:not(.button-atom) {
     color: {{ design.text_colors.link }};
   }
 {% endif %}
 
 {% if design.text_colors.link_hover %}
-  %%SELECTOR%% a:hover {
+  %%SELECTOR%% a:not(.button-atom):hover {
     color: {{ design.text_colors.link_hover }};
   }
 {% endif %}

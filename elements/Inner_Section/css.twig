@@ -6,7 +6,7 @@
 {{ macros.fancyBackgroundCss('%%SELECTOR%%', design.background, breakpoint, design.size.viewport, false, false) }}
 
 {# Text Colors #}
-%%SELECTOR%% * {
+%%SELECTOR%% {
   {% if design.text_colors.text %}
     color: {{ design.text_colors.text }};
   {% endif %}
@@ -22,13 +22,13 @@
 {% endif %}
 
 {% if design.text_colors.link %}
-  %%SELECTOR%% a {
+  %%SELECTOR%% a:not(.button-atom) {
     color: {{ design.text_colors.link }};
   }
 {% endif %}
 
 {% if design.text_colors.link_hover %}
-  %%SELECTOR%% a:hover {
+  %%SELECTOR%% a:not(.button-atom):hover {
     color: {{ design.text_colors.link_hover }};
   }
 {% endif %}
