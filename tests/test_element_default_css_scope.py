@@ -34,6 +34,30 @@ class ElementDefaultCssScopeTest(unittest.TestCase):
                         f"Native elements are matched by {directory}: {selector.strip()}",
                     )
 
+    def test_custom_defaults_are_zero_specificity_fallbacks(self):
+        # Defaults must be present even on pages containing only our custom
+        # elements, but must never beat Breakdance's saved instance controls.
+        for directory in ELEMENTS:
+            with self.subTest(element=directory):
+                css = (ROOT / "elements" / directory / "default.css").read_text()
+                rules = re.findall(r"([^{}]+)\{([^{}]*)\}", css)
+                self.assertTrue(rules, f"{directory} has no standalone fallback")
+                for selector, declarations in rules:
+                    selector = selector.strip()
+                    self.assertTrue(
+                        selector.startswith(":where(") and selector.endswith(")"),
+                        f"{directory} default can override an instance control: {selector}",
+                    )
+                    self.assertNotIn("!important", declarations.lower())
+
+    def test_authored_text_color_does_not_override_child_buttons(self):
+        for directory in ELEMENTS:
+            with self.subTest(element=directory):
+                css = (ROOT / "elements" / directory / "css.twig").read_text()
+                self.assertNotRegex(css, r"%%SELECTOR%%\s+\*\s*\{[^}]*\bcolor\s*:")
+                self.assertNotIn("%%SELECTOR%% a {", css)
+                self.assertIn("a:not(.button-atom)", css)
+
     def test_custom_inner_section_does_not_style_nested_sections(self):
         css = (ROOT / "elements" / "Inner_Section" / "default.css").read_text()
         for selector in re.findall(r"([^{}]+)\{[^{}]*\}", css):

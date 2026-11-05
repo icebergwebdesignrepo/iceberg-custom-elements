@@ -6,7 +6,7 @@ updating the plugin can overwrite site-local Element Studio edits.
 
 ## Updating
 
-The `3.0.4` release checks `https://plugin.icebergwebdesign.com` for updates in the
+The `3.1.0` release checks `https://plugin.icebergwebdesign.com` for updates in the
 WordPress Plugins dashboard. Auto-updates remain a per-site WordPress choice;
 the plugin does not force them. The server supplies a signed package URL that
 expires after 15 minutes, so the updater obtains a fresh signature immediately
@@ -22,7 +22,11 @@ then use **Breakdance → Settings → Tools → Regenerate CSS Cache** to rebui
 generated stylesheets. Otherwise the original header/layout regression can
 remain visible even though the installed plugin reports a newer version. The
 same cache rebuild is needed for 3.0.2 to remove old Inner Section default
-padding that would override the saved per-instance padding.
+padding that would override the saved per-instance padding. After upgrading to
+3.1.0, regenerate again to replace previously generated high-specificity
+defaults for custom alignment/layout; updating the plugin alone does not
+rewrite existing page/template CSS caches. Template-authored broad CSS (for
+example `.breakdance a`) is outside this plugin and must be scoped at its source.
 
 ## Top bar migration in 3.0.4
 
@@ -62,7 +66,7 @@ python scripts/build_release.py --output /absolute/private/path/iceberg-custom-e
 Place the tested ZIP at
 `/home/iceberg/private/plugins/iceberg-custom-elements/iceberg-custom-elements.zip`
 and register the slug `iceberg-custom-elements` in the update server's **private**
-configuration. Its metadata must match the ZIP (`current_version: 3.0.4`,
+configuration. Its metadata must match the ZIP (`current_version: 3.1.0`,
 `requires: 6.0`, `requires_php: 8.0`, `requires_license: false`); `tested: 7.1.3`
 is owner-reported, not an end-to-end verification by this project. Back up the
 specific private config and target artifact outside the public web root before
